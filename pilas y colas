@@ -1,0 +1,152 @@
+#include <iostream>
+#include <conio.h>
+using namespace std;
+
+struct Nodo{
+
+    int dato;
+    Nodo *siguiente;
+
+};
+
+
+int MenuPilas();
+int MenuColas();
+
+
+void agregarPila(Nodo *&, int);
+void sacarPila(Nodo *&, int &);
+
+
+void Pila();
+void ImprimirPila();
+void TopedelaPila();
+void SuprimirtopePila();
+void AnularPila();
+
+int main(){
+    setlocale(LC_ALL, "spanish");
+    system("cls");
+    int opcion;
+    cout << "Selecione una opcion" << endl;
+    do {
+        cout << "1. Pilas" << endl;
+        cout << "2. Colas" << endl;
+        cout << "Opcion: ";
+        cin >> opcion;
+        cin.ignore();
+        switch (opcion) {
+        case 1: MenuPilas();
+            break;
+        case 2: MenuColas();
+            break;
+        case 3:
+            cout << "Cerrando Sistema" << endl;
+            break;
+        default: cout << "Valor Invalido" << endl;
+        }
+    } while (opcion != 3);
+}
+
+int MenuPilas(){
+    int opcion;
+    int aux, pila;
+    cout << "Selecione una opcion" << endl;
+
+    do{
+        cout << "1. Agregar Elementos." << endl;
+        cout << "2. Imprimir Pila." << endl;
+        cout << "3. Tope de la Pila." << endl;
+        cout << "4. Suprimir tope de la Pila." << endl;
+        cout << "5. Anular Pila." << endl;
+        cout << "6. Regresar al menú anterior." << endl;
+        cout << "Opcion: ";
+        cin>>opcion;
+        cin.ignore();
+        switch(opcion){
+            case 1: Pila();
+                break;
+            case 2: ImprimirPila();
+                break;
+            case 3: TopedelaPila();
+                break;
+            case 4: SuprimirtopePila();
+                break;
+            case 5: AnularPila();
+                break;
+            case 6:
+                break;
+            cout << "Regresando al Menú anterior" << endl;
+                break;
+            default: cout << "Valor Invalido" << endl;
+            }
+    }while(opcion != 7);
+
+}
+
+void Pila(){
+
+    Nodo *pila = NULL;
+    int dato;
+    char respuesta;
+
+    do{
+        cout<<"Ingrese un numero: ";
+        cin>> dato;
+        agregarPila(pila, dato);
+
+        cout<<"\nDesea agregar otro elemento a la Pila(s/n): ";
+        cin>>respuesta;
+
+
+    }while((respuesta == 'S')||(respuesta == 's'));
+
+}
+
+void ImprimirPila(){
+
+
+
+}
+
+
+void agregarPila(Nodo *&pila, int n){
+   Nodo *nuevo_nodo = new Nodo();
+   nuevo_nodo->dato = n;
+   nuevo_nodo->siguiente = pila;
+   pila = nuevo_nodo;
+
+    cout<<"\tEl dato "<<n<<" ha sido agregado correctamente a la Pila";
+
+}
+
+void sacarPila(Nodo *&pila, int &n){
+    Nodo *aux = pila;
+    n = aux->dato;
+    pila = aux->siguiente;
+
+    delete aux;
+}
+
+
+void TopedelaPila(){
+
+
+}
+
+void SuprimirtopePila(){
+
+
+}
+
+void AnularPila(){
+
+
+}
+
+int MenuColas(){
+
+
+
+    return 0;
+}
