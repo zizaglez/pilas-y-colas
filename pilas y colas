@@ -1,37 +1,116 @@
 #include <iostream>
-#include <conio.h>
 using namespace std;
 
-struct Nodo{
-
+struct nodo{
     int dato;
-    Nodo *siguiente;
-
+    struct nodo *siguiente;
 };
 
+struct cola
+{
+    nodo *delante;
+    nodo *atras;
+};
+
+typedef nodo *ptrPila;
 
 int MenuPilas();
 int MenuColas();
 
+void menu()
+{
+    cout<<" 1. AGREGAR ELEMENTOS"<<endl;
+    cout<<" 2. IMPRIMIR PILA"<<endl;
+    cout<<" 3. TOPE DE LA PILA"<<endl;
+    cout<<" 4. SUPRIMIR TOPE DE LA PILA"<<endl;
+    cout<<" 5. DESTRUIR PILA"<<endl;
+    cout<<" 6. REGRESAR AL MENU ANTERIOR"<<endl;
 
-void agregarPila(Nodo *&, int);
-void sacarPila(Nodo *&, int &);
+    cout<<"\n INGRESE OPCION: ";
+}
+
+void menu2()
+{
+    cout<<" 1. AGREGAR ELEMENTOS A LA COLA"<<endl;
+    cout<<" 2. IMPRIMIR COLA"<<endl;
+    cout<<" 3. FRENTE DE LA COLA"<<endl;
+    cout<<" 4. FINAL DE LA COLA"<<endl;
+    cout<<" 5. SUPRIMIR FRENTE DE LA COLA"<<endl;
+    cout<<" 6. ANULAR COLA"<<endl;
+    cout<<" 7. REGRESAR AL MENU ANTERIOR"<<endl;
+
+    cout<<"\n INGRESE OPCION: ";
+}
 
 
-void Pila();
-void ImprimirPila();
-void TopedelaPila();
-void SuprimirtopePila();
-void AnularPila();
+
+void push( ptrPila &p, int valor )
+{
+     ptrPila aux;
+     aux = new(struct nodo);
+     aux->dato = valor;
+
+     aux->siguiente = p ;
+     p = aux ;
+}
+
+
+
+int pop( ptrPila &p )
+{
+     int num ;
+     ptrPila aux;
+
+     aux = p ;
+     num = aux->dato;
+
+     p = aux->siguiente ;
+     delete(aux);
+
+     return num;
+}
+
+
+void mostrar_pila( ptrPila p )
+{
+     ptrPila aux;
+     aux = p;
+
+     while( aux !=NULL )
+     {
+            cout<<"\t"<< aux->dato <<endl;
+            aux = aux->siguiente;
+     }
+}
+
+
+void destruir_pila( ptrPila &p)
+{
+     ptrPila aux;
+
+     while( p != NULL)
+     {
+           aux = p;
+           p = aux->siguiente;
+           delete(aux);
+     }
+}
+
 
 int main(){
-    setlocale(LC_ALL, "spanish");
+
+    setlocale(LC_ALL, "spanish");ptrPila p = NULL;
+    int dato;
+    int op;
+    int x ;
+    char respuesta;
     system("cls");
     int opcion;
     cout << "Selecione una opcion" << endl;
     do {
-        cout << "1. Pilas" << endl;
-        cout << "2. Colas" << endl;
+        cout << "1. PILAS" << endl;
+        cout << "2. COLAS" << endl;
+        cout << "3. SALIR DEL SISTEMA" << endl;
         cout << "Opcion: ";
         cin >> opcion;
         cin.ignore();
@@ -48,105 +127,176 @@ int main(){
     } while (opcion != 3);
 }
 
+
 int MenuPilas(){
-    int opcion;
-    int aux, pila;
-    cout << "Selecione una opcion" << endl;
-
-    do{
-        cout << "1. Agregar Elementos." << endl;
-        cout << "2. Imprimir Pila." << endl;
-        cout << "3. Tope de la Pila." << endl;
-        cout << "4. Suprimir tope de la Pila." << endl;
-        cout << "5. Anular Pila." << endl;
-        cout << "6. Regresar al menú anterior." << endl;
-        cout << "Opcion: ";
-        cin>>opcion;
-        cin.ignore();
-        switch(opcion){
-            case 1: Pila();
-                break;
-            case 2: ImprimirPila();
-                break;
-            case 3: TopedelaPila();
-                break;
-            case 4: SuprimirtopePila();
-                break;
-            case 5: AnularPila();
-                break;
-            case 6:
-                break;
-            cout << "Regresando al Menú anterior" << endl;
-                break;
-            default: cout << "Valor Invalido" << endl;
-            }
-    }while(opcion != 7);
-
-}
-
-void Pila(){
-
-    Nodo *pila = NULL;
+    ptrPila p = NULL;
     int dato;
+    int op;
+    int x ;
     char respuesta;
 
     do{
-        cout<<"Ingrese un numero: ";
-        cin>> dato;
-        agregarPila(pila, dato);
+    menu();
+    cin>> op;
+    switch(op){
+            case 1:
+                do{
+                 cout<< "\nIngrese elemento apilar: ";
+                 cin>> dato;
+                 push( p, dato );
 
-        cout<<"\nDesea agregar otro elemento a la Pila(s/n): ";
-        cin>>respuesta;
+                 cout<<"deseas agregar otro elemento a la pila? (s/n): ";
+                 cin>> respuesta;
+                }while((respuesta=='S')|| (respuesta=='s'));
 
+                cout<<"Numero " << dato << " agregado a la pila correctamente...\n";
+            break;
+            case 2:
+                cout << "Imprimiendo la pila....\n";
+                 if(p!=NULL){
+                    mostrar_pila( p );
+                 }
+                 else{
+                    cout<<"La pila vacia..!"<<endl;
+                 }
+                    break;
+            case 3:
 
-    }while((respuesta == 'S')||(respuesta == 's'));
+                    break;
+            case 4:
+                x = pop( p );
+                cout<<"Numero "<< x <<" desapilado...\n\n";
+                    break;
+
+            case 5:
+                destruir_pila( p );
+                cout<<"Pila eliminada...\n\n";
+                    break;
+            case 6:
+                cout<<"Regresar al menu anterior";
+                    break;
+         }
+
+        cout<<endl<<endl;
+        system("pause");  system("cls");
+
+    }while(op!=6);
+
+    return 0;
+}
+
+void agregarcola( struct cola &q, int valor ){
+     struct nodo *aux = new(struct nodo);
+
+     aux->dato = valor;
+     aux->siguiente = NULL;
+
+     if( q.delante == NULL)
+         q.delante = aux;   // encola el primero elemento
+     else
+         (q.atras)->siguiente = aux;
+
+     q.atras = aux;        // puntero que siempre apunta al ultimo elemento
 
 }
 
-void ImprimirPila(){
+int desencolar( struct cola &q ){
+     int num ;
+     struct nodo *aux ;
 
+     aux = q.delante;      // aux apunta al inicio de la cola
+     num = aux->dato;
+     q.delante = (q.delante)->siguiente;
+     delete(aux);          // libera memoria a donde apuntaba aux
 
+     return num;
+}
 
+void muestraCola( struct cola q )
+{
+     struct nodo *aux;
+
+     aux = q.delante;
+
+     while( aux != NULL )
+     {
+            cout<<"   "<< aux->dato ;
+            aux = aux->siguiente;
+     }
 }
 
 
-void agregarPila(Nodo *&pila, int n){
-   Nodo *nuevo_nodo = new Nodo();
-   nuevo_nodo->dato = n;
-   nuevo_nodo->siguiente = pila;
-   pila = nuevo_nodo;
+void vaciaCola( struct cola &q)
+{
+     struct nodo *aux;
 
-    cout<<"\tEl dato "<<n<<" ha sido agregado correctamente a la Pila";
-
-}
-
-void sacarPila(Nodo *&pila, int &n){
-    Nodo *aux = pila;
-    n = aux->dato;
-    pila = aux->siguiente;
-
-    delete aux;
-}
-
-
-void TopedelaPila(){
-
-
-}
-
-void SuprimirtopePila(){
-
-
-}
-
-void AnularPila(){
-
+     while( q.delante != NULL)
+     {
+            aux = q.delante;
+            q.delante = aux->siguiente;
+            delete(aux);
+     }
+     q.delante = NULL;
+     q.atras   = NULL;
 
 }
 
 int MenuColas(){
+    int dato;
+    int op;
+    int x ;
+    char respuesta;
 
+    struct cola q;
 
+    q.delante = NULL;
+    q.atras   = NULL;
+    do
+    {
+        menu2();
+        cin>> op;
+        switch(op)
+        {
+            case 1:
+                do{
+                 cout<< "\nIngrese elementos a la cola: ";
+                 cin>> dato;
+                 agregarcola( q, dato );
 
-    return 0;
+                 cout<<"deseas agregar otro elemento a la cola? (s/n): ";
+                 cin>> respuesta;
+                }while((respuesta=='S')|| (respuesta=='s'));
+                 cout<<"\n\n\t\tNumero " << dato << " encolado...\n\n";
+                    break;
+            case 2:
+
+                cout << "Imprimiendo detalles de la cola....";
+                    if(q.delante!=NULL) muestraCola( q );
+                        else   cout<<"La cola esta vacia...!"<<endl;
+                    break;
+            case 3:
+
+                    break;
+            case 4:
+
+                    break;
+            case 5:
+                x = desencolar( q );
+                cout<<"\n\n\t\tNumero "<< x <<" agregado a la cola correctamente...\n";
+                break;
+            case 6:
+                vaciaCola( q );
+                cout<<"Vaciando la cola....";
+                    break;
+            case 7:
+                cout<<"Regresar al menu anterior";
+                    break;
+         }
+
+        cout<<endl<<endl;
+        system("pause");
+        system("cls");
+
+    }while(op!=7);
+
 }
